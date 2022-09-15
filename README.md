@@ -1,71 +1,71 @@
 # Subgraphs
 
-This repo contains subgraphs defined using a set of standardized schemas. These subgraphs are used to extract raw blockchain data and transform them into meaningful metrics, for products and analytics. Our goal is to build a subgraph for every DeFi protocol in the space.
+このレポジトリは標準化されたスキーマによって定義されるサブグラフを含んでいます。このサブグラフは、ブロックチェーンから直接データを抽出し、dAppや分析のために、意味のあるメトリックに変換するために使用されます。私たちの目標は、仮想通貨の世界のすべてのDeFiプロトコルのためのサブグラフを構築することです。
 
-## Contribution Guidelines
+## コントリビュートガイド
 
-- Decide which protocol you want to build a subgraph for.
-- Fork this repository.
-- Add a folder under `subgraphs` with the name of the protocol you want to work on.
-- Copy over the corresponding schema from the root folder. For example, if you are working on a yield aggregator, you should copy over `schema-yield.graphql` to your folder and rename it to `schema.graphql`. Note `schema-common.graphql` is used for schema design and reference, and should never be used for implementation.
-- Build the subgraph within that folder. Feel free to use the [reference subgraph](./subgraphs/_reference_/) as a reference.
-- Submit a PR (pull request) to this repo after you are done. Make sure you submit your PR as a draft if it's a work-in-progress. Include a link to your deployment in your PR description.
+- どのプロトコルのサブグラフを作成するかを決めます。
+- このリポジトリをフォークします。
+- フォルダ`subgraphs`の下に、作業したいプロトコルの名前でフォルダを追加します。
+- ルートフォルダから対応するスキーマをコピーしてください。例えば、Yield aggregator を開発する場合、`schema-yield.graphql` を自分のフォルダにコピーして、`schema.graphql` にリネームしてください。`schema-common.graphql`はスキーマの設計やリファレンスとして使用するものであり、実装には決して使用しないことに注意してください。
+- そのフォルダの中でサブグラフを構築する。[リファレンス・サブグラフ](./subgraphs/_reference_/)をリファレンスとして自由に使ってください。
+- 完成したら、このレポにPR（プルリクエスト）を提出します。作業途中のPRの場合は、必ずドラフトとして提出してください。PRの説明には、あなたのデプロイメントへのリンクを含めてください。
 
 ## Recommended Development Workflow
 
-- Start with understanding the protocol. An easy start could be interacting with the protocol UI on testnets, check transaction details on Etherscan and pay attention to key events that are emitted.
-- Go over the smart contracts. Identify the ones that we need to pull data from.
-  - Usually each protocol has a factory contract that's responsible for tracking other contracts (e.g. Uniswap's Factory contract, Aave's Lending Pool Registry, Yearn's Registry).
-  - Also a pool/vault contract that's responsible for pool level bookkeeping and transactions (e.g. Uniswap's Pair contract, Yearn's Vault contract, Aave's Lending Pool contract).
-- Go over the schema and think about what data are needed from smart contract events/calls to map to the fields in each entity.
-  - It's easiest to start with more granular entities and build up to aggregated data.
-  - For example, usually it's easier to start writing mappings for transactions and usage metrics.
-- Go over the documents in the `docs` folder. That should answer lots of questions you may have.
-- Implement the mappings, deploy and test your data using either Hosted Service or The Graph Studio.
-- For metrics calculation (e.g. revenue, fees, TVL), please refer to the `README.md` in the protocol's subgraph folder for methodology. There is also a broader explanation of how different fields are defined in the schema in `docs/Schema.md`. Feel free to reach out to me if anything isn't clear.
-- We've built a handy debugging/validation dashboard for you to quickly visualize the data in your subgraph. It's deployed to [subgraphs.xyz](https://subgraphs.xyz/) and the source code is under `dashboard` if you want to spin it up locally.
-- Verify your subgraph against other sources and include specific links to these sources in the README. Below are some common sources:
-  - Project's official analytics dashboard
-  - [DeFi Llama](https://defillama.com/) (for TVL)
+- プロトコルを理解することから始めましょう。テストネットでプロトコルのUIを操作し、Etherscanで取引の詳細を確認し、発信される主要なイベントに注目することから始めるのが簡単でしょう。
+- スマートコントラクトを調べます。データを取得する必要があるものを特定する。
+  - 通常、各プロトコルには、他のコントラクトの追跡を担当するファクトリーコントラクトがあります（例：Uniswapのファクトリーコントラクト、Aaveのレンディングプールレジストリ、Yearnのレジストリなど）。
+  - また、プールレベルの簿記とトランザクションを担当するプール/金庫契約もある（例：Uniswapのペア契約、Yearnの金庫契約、Aaveのレンディングプール契約）。
+- スキーマを確認し、スマートコントラクトのイベント/コールから、どのデータが各エンティティのフィールドにマッピングされる必要があるか考えてください。
+  - より粒度の細かいエンティティから始めて、集約されたデータまで構築するのが最も簡単です。
+  - 例えば、通常はトランザクションや使用状況メトリクス用のマッピングを書き始めるのが簡単です。
+- docs` フォルダにあるドキュメントに目を通してみてください。多くの疑問が解決されるはずです。
+- マッピングを実装し、Hosted ServiceまたはThe Graph Studioを使ってデータをデプロイし、テストする。
+- メトリクスの計算（例：収益、手数料、TVL）については、プロトコルのサブグラフフォルダにある `README.md` を参照してください。また、`docs/Schema.md`にスキーマの各フィールドがどのように定義されているか、より幅広い説明があります。もし何か不明な点があれば、遠慮なく私に連絡してください。
+- サブグラフのデータを素早く視覚化するために、便利なデバッグ/検証用ダッシュボードを作成しました。これは、[subgraphs.xyz](https://subgraphs.xyz/)にデプロイされており、ソースコードは `dashboard` にありますので、ローカルで起動したい場合はそちらをご利用ください。
+- 他のソースに対してサブグラフを検証し、これらのソースへの特定のリンクをREADMEに含めてください。以下は、一般的なソースです。
+  - プロジェクトの公式アナリティクスダッシュボード
+  - [DeFi Llama](https://defillama.com/) (TVL確認)
   - [Dune Analytics](https://dune.xyz/)
   - [TokenTerminal](https://www.tokenterminal.com/terminal)
 
-> For other contributing guidelines, please refer to [Contributing.md](./docs/Contributing.md)
+> その他の寄稿ガイドラインは [Contributing.md](./docs/Contributing.md) を参照してください。
 
 ## Resources
 
-### Introductory
+### 入門ドキュメント
 
-- Learn the basics of GraphQL: [https://graphql.org/learn/](https://graphql.org/learn/)
-- Query subgraphs using GraphQL: https://thegraph.com/docs/en/developer/graphql-api/
-- Get familiar with The Graph: [https://thegraph.academy/developers/](https://thegraph.academy/developers/)
-- Defining a subgraph: [https://thegraph.academy/developers/defining-a-subgraph/](https://thegraph.academy/developers/defining-a-subgraph/)
-- Creating a subgraph: https://thegraph.com/docs/en/developer/create-subgraph-hosted/
-- Deploying a subgraph using The Graph Studio: [https://thegraph.com/docs/en/studio/deploy-subgraph-studio/](https://thegraph.com/docs/en/studio/deploy-subgraph-studio/)
+- GraphQLの基本: [https://graphql.org/learn/](https://graphql.org/learn/)
+- GraphQLを使ったサブグラフのクエリ: https://thegraph.com/docs/en/developer/graphql-api/
+- The Graphの入門: [https://thegraph.academy/developers/](https://thegraph.academy/developers/)
+- サブグラフの定義: [https://thegraph.academy/developers/defining-a-subgraph/](https://thegraph.academy/developers/defining-a-subgraph/)
+- サブグラフの作成: https://thegraph.com/docs/en/developer/create-subgraph-hosted/
+- The Graph Studioを使ったサブグラフのデプロイメント: [https://thegraph.com/docs/en/studio/deploy-subgraph-studio/](https://thegraph.com/docs/en/studio/deploy-subgraph-studio/)
 
-### Intermediate
+### 中級ドキュメント
 
 - [AssemblyScript API](https://thegraph.com/docs/en/developer/assemblyscript-api/)
-- [Unit Test Using Matchstick](https://thegraph.com/docs/en/developer/matchstick/)
-- [Building a Subgraph for Sushiswap](https://docs.simplefi.finance/subgraph-development-documentation/sushiswap-subgraph-development)
-- [Building a Subgraph for Loopring](https://www.youtube.com/watch?v=SNmzhwlQqgU)
-  - Using templates (dynamic data sources)
-  - Indexing proxies
+- [Matchstickを用いたユニットテスト](https://thegraph.com/docs/en/developer/matchstick/)
+- [Sushiswap用のサブグラフを開発する](https://docs.simplefi.finance/subgraph-development-documentation/sushiswap-subgraph-development)
+- [Loopringのサブグラフを開発する](https://www.youtube.com/watch?v=SNmzhwlQqgU)
+  - テンプレート（動的データソース）の利用
+  - プロキシのインデックス作成
 
-### Advanced
+### 上級ドキュメント
 
-- Building ambitious subgraphs (Part I): https://www.youtube.com/watch?v=4V2o5YJooOM
-  - Schema design
-  - Error handling
-  - Interface and union types
-- Building ambitious subgraphs (Part II) https://www.youtube.com/watch?v=1-8AW-lVfrA
-  - Performance tips and tricks (for both mappings and queries)
-- [Documentation for the graph-node](https://github.com/graphprotocol/graph-node/tree/master/docs)
+- 素晴らしいサブグラフを開発する (パートI): https://www.youtube.com/watch?v=4V2o5YJooOM
+  - スキーマデザイン
+  - エラーハンドリング
+  - インターフェースとユニオンタイプ
+- 素晴らしいサブグラフを開発する (パートII) https://www.youtube.com/watch?v=1-8AW-lVfrA
+  - パフォーマンスへのtipと技術 (マッピング・クエリ面)
+- [graph-nodeのドキュメント](https://github.com/graphprotocol/graph-node/tree/master/docs)
 
 ## Development Status
 
-🔨 = In progress.  
-🛠 = Feature complete. Additional testing required.  
+🔨 = In progress.
+🛠 = Feature complete. Additional testing required.
 ✅ = Production-ready.
 | Protocol | Status | Versions † | Deployments |
 | ------- | :------: | --- | --- |
